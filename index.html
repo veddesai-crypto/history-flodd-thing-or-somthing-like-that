@@ -11,11 +11,11 @@
 </head>
 <body>
 
-<h1>Custom History Flood</h1>
+<h1>Enhanced History Flood</h1>
 <p>Enter the URL you want to flood your history with:</p>
 <input type="text" id="url" placeholder="https://example.com" style="width: 300px;">
 <br>
-<p>Number of times to add to history:</p>
+<p>Number of entries to add:</p>
 <input type="number" id="num" placeholder="Number of entries" min="1" style="width: 100px;">
 <br>
 <button onclick="floodHistory()">Start Flood</button>
@@ -31,18 +31,35 @@ function floodHistory() {
   }
 
   if(isNaN(num) || num <= 0){
-    alert("Enter a positive number for how many times to flood.");
+    alert("Enter a positive number.");
     return;
   }
 
+  // Array of example titles to randomize
+  const titles = [
+    "Homepage",
+    "Math Section",
+    "Practice Problems",
+    "Quiz Results",
+    "Lesson Page",
+    "Dashboard",
+    "Student Portal",
+    "Exercises",
+    "Progress Report",
+    "Activity Feed"
+  ];
+
   for(let i=0; i<num; i++){
-    history.pushState({}, "Visited", url);
+    const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+    // Add "?entry=i" to make URLs slightly different
+    history.pushState({}, randomTitle, url + "?entry=" + (i+1));
   }
 
-  alert("History flood complete! The URL '" + url + "' now appears " + num + " times in your history.");
+  alert("History flood complete! The URL '" + url + "' now appears " + num + " times with random titles.");
 }
 </script>
 
 </body>
 </html>
+
 
