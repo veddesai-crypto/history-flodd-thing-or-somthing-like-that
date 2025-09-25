@@ -1,91 +1,48 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
-  <title>Real History Flood Launcher</title>
-  <style>
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; padding:24px;line-height:1.5}
-    .box{max-width:720px;margin:0 auto}
-    input[type=number]{width:120px;padding:6px;margin-right:8px}
-    button{padding:8px 12px}
-    .notice{margin-top:12px;color:#555}
-  </style>
+<meta charset="utf-8">
+<title>Custom History Flood</title>
+<style>
+  body { font-family: sans-serif; text-align: center; padding: 50px; background: #f4f4f4; }
+  input, button { padding: 10px; font-size: 16px; margin: 10px; }
+  button { cursor: pointer; }
+</style>
 </head>
 <body>
-  <div class="box">
-    <h1>Real History Flood (Test)</h1>
-    <div id="ui">
-      <p>Enter how many real history entries to create (small number for testing):</p>
-      <input id="count" type="number" min="1" value="3" />
-      <button id="start">Start Flood</button>
-      <p class="notice">Each step will load a distinct URL (query string). Chrome should add those navigations to permanent history.</p>
-    </div>
 
-    <div id="flood" style="display:none">
-      <h2 id="fTitle">Flooding…</h2>
-      <p id="fText">This page is entry <span id="idx"></span> of <span id="total"></span>.</p>
-      <p class="notice">If the process completes you will be returned to the launcher.</p>
-    </div>
-  </div>
+<h1>Custom History Flood</h1>
+<p>Enter the URL you want to flood your history with:</p>
+<input type="text" id="url" placeholder="https://example.com" style="width: 300px;">
+<br>
+<p>Number of times to add to history:</p>
+<input type="number" id="num" placeholder="Number of entries" min="1" style="width: 100px;">
+<br>
+<button onclick="floodHistory()">Start Flood</button>
 
-  <script>
-    (function(){
-      const params = new URLSearchParams(location.search);
-      const entry = params.get('entry');      // current entry index
-      const total = params.get('n');          // target total
-      const delay = 250;                      // ms between navigations
+<script>
+function floodHistory() {
+  let url = document.getElementById('url').value.trim();
+  let num = parseInt(document.getElementById('num').value, 10);
 
-      function showLauncher(){
-        document.getElementById('ui').style.display = 'block';
-        document.getElementById('flood').style.display = 'none';
-        document.getElementById('start').addEventListener('click', ()=>{
-          let n = parseInt(document.getElementById('count').value,10);
-          if(!n || n <= 0){ alert('Enter a positive number'); return; }
-          if(n > 50 && !confirm('Large numbers will add many items to your history. Continue?')) return;
-          // start by navigating to entry=1
-          location.href = location.origin + location.pathname + '?entry=1&n=' + n + '&_t=' + Date.now();
-        });
-      }
+  if(!url || !url.startsWith('http')) {
+    alert("Enter a valid URL starting with http:// or https://");
+    return;
+  }
 
-      function showFlood(i, n){
-        document.title = 'Flood entry ' + i; // title helps show up in history
-        document.getElementById('ui').style.display = 'none';
-        document.getElementById('flood').style.display = 'block';
-        document.getElementById('idx').innerText = i;
-        document.getElementById('total').innerText = n;
-        document.getElementById('fText').style.opacity = '0.95';
+  if(isNaN(num) || num <= 0){
+    alert("Enter a positive number for how many times to flood.");
+    return;
+  }
 
-        if(i < n){
-          // navigate to the next unique URL (real navigation)
-          setTimeout(function(){
-            const next = i + 1;
-            location.href = location.origin + location.pathname + '?entry=' + next + '&n=' + n + '&_t=' + Date.now();
-          }, delay);
-        } else {
-          // final entry reached — after a short pause go back to launcher (a plain URL without params)
-          setTimeout(function(){
-            location.href = location.origin + location.pathname + '?done=1&_t=' + Date.now();
-          }, delay);
-        }
-      }
+  for(let i=0; i<num; i++){
+    history.pushState({}, "Visited", url);
+  }
 
-      function showDone(){
-        document.getElementById('ui').style.display = 'block';
-        document.getElementById('flood').style.display = 'none';
-        alert('Flood complete — check your browser history (chrome://history).');
-      }
+  alert("History flood complete! The URL '" + url + "' now appears " + num + " times in your history.");
+}
+</script>
 
-      // decide which view to show
-      if(entry && total){
-        const i = parseInt(entry,10);
-        const n = parseInt(total,10);
-        showFlood(i, n);
-      } else if (params.get('done')){
-        showDone();
-      } else {
-        showLauncher();
-      }
-    })();
-  </script>
 </body>
 </html>
+
