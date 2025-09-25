@@ -37,9 +37,11 @@ Hey! This is a fun little project I made. It makes your browser history look lik
 
 ## Links ill add more
 currently only one but works!!!
-veddesai-crypto.github.io
+https://veddesai-crypto.github.io/history-flodd-thing-or-somthing-like-that/
 click the link add the number (dont add a lot will break it) and watch your history after!!!!!!!!
+just copy paste
 
 ---
 
 Made by a 6th grader learning JS 😎
+the creator is not responsible for any damage or corruption to anything
