@@ -35,6 +35,11 @@ Hey! This is a fun little project I made. It makes your browser history look lik
 - Don’t flood your teacher’s computer lol 😂  
 - Only use it for fun on your own stuff.  
 
+## Links ill add more
+currently only one but works!!!
+veddesai-crypto.github.io
+click the link add the number (dont add a lot will break it) and watch your history after!!!!!!!!
+
 ---
 
 Made by a 6th grader learning JS 😎
